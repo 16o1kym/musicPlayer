@@ -1,0 +1,69 @@
+# serializers pack the data when going to the server and unpack it when it comes back from the server.
+
+# 2 types of serializers :
+# ModelSerializers {short and simple but not much scope of customzation} and Serializers class { lengthy but can be customised }
+
+
+//     
+didn't do this. Following the documentation now.
+//     
+# create a folder to seperate the rest framework things from other code running on server. In this case, I'm naming it as rest_api
+Also, __init__.py file should be created so django will know that this folder is a package.
+
+
+
+# in serializers.py, make a class for the model defined in model that need to be serialised. import class serializers.Serializer into that class to use it's functionality.
+
+first, we define all model variables that need to be serialised.
+
+the two functions create and update are just to create and update already created instances of model.
+These functions will be called by instances so we pass self as first argument, after that it's self explanatory.
+
+
+
+
+# in serialzer class, a lot of information that we have already defined in models is being typed out again.
+
+to fix this, or do it in a better way, we will use ModelSerializers
+
+So comment out that code in class and import serializers.ModelSerializer instead. define the model and which fields of that model need to be serialised. 
+
+the create and update functions are created by default.
+
+####
+to test api, there's one file .rest in practice_rest. 
+####
+
+
+request object : extends regular httprequest object => more functionality
+
+request.POST  # Only handles form data.  Only works for 'POST' method.
+request.data  # Handles arbitrary data.  Works for 'POST', 'PUT' and 'PATCH' methods.
+
+
+response object : type of template response
+
+The @api_view decorator for working with function based views.
+The APIView class for working with class-based views.
+
+request.data can handle incoming json requests, but it can also handle other formats
+
+
+A common pattern for Web APIs is to use filename extensions on URLs to provide an endpoint for a given media type. For example, 'http://example.com/api/users.json' to serve a JSON representation.
+
+Adding format-suffix patterns to each individual entry in the URLconf for your API is error-prone and non-DRY, so REST framework provides a shortcut to adding these patterns to your URLConf.
+
+
+this is done by setting up urlpatterns as :
+urlpatterns = format_suffix_patterns(urlpatterns)
+
+and in the views defined, pass a parameter format = None. This is required.
+
+
+Class based views are pretty similar but they provide better structuring of the apis.
+
+See more about genericAPIview
+
+
+# SESSIONS :
+eg. for insta when we are logged in from a device(think of browser), we need not login again and again coz it maintains a session. Basically, the server stores some data which helps identifying the user request coming from the same device for a temporary time. So in django, the session is stored in memory. If the server crashes or it goes down for some reason, the session will be gone.

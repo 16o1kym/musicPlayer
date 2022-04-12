@@ -1,0 +1,19 @@
+
+
+# GET http://localhost:8000/practiceRest/detail/2/
+
+
+GET https://www.iith.ac.in/vigil/resources.html
+
+
+POST http://localhost:8000/practiceRest/list/
+content-type: application/json
+
+{
+  "id": 5,
+  "title": "zxc z",
+  "code": "kym2",
+  "linenos": false,
+  "language": "python"
+}
+
