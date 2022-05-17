@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 
 const home = React.lazy (()=>import ('../views/home'));
 const createRoomPage = React.lazy (()=>import ('../views/createRoomPage'));
+const room = React.lazy(() => import('../views/room'));
 const routes = [
     {
         path : '/',
@@ -13,6 +14,11 @@ const routes = [
         path : '/create',
         exact : true,
         page : createRoomPage
+    },
+    {
+        path : '/room/:roomCode',
+        exact : true,
+        page : room,
     }
 ]
 

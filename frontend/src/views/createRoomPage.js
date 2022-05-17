@@ -2,12 +2,15 @@ import React, {useState} from 'react'
 import Typography from '@material-ui/core/Typography';
 import Radio from '@material-ui/core/Radio';
 import { FormControl, FormLabel, FormControlLabel, RadioGroup , TextField , Button} from '@material-ui/core';
+import { useNavigate } from 'react-router-dom';
+
 
 const createRoomPage = ()=>{
 
   const [canSkip , setCanSkip] = useState(true);
   const [votesToSkip , setVotesToSkip] = useState(2);
-
+  // const [CSRFToken , setCSRFToken] = useState("");
+  const nav = useNavigate();
 
 
   const handleCanSkip = (bool) => {
@@ -18,22 +21,36 @@ const createRoomPage = ()=>{
     setVotesToSkip(e.target.value);
   }
 
-  const handleCreateRoom = () =>{
+  const getCSRFToken = async () =>{
+    try{
+      const res = await fetch("/api/");
+      const data = await res.json();
+      return data;
+    } catch(err){
+      console.log(err);
+    }
+    return "";
+  }
+  
+  const handleCreateRoom = async () =>{
+    const csrf = await getCSRFToken();
+    console.log(csrf)
     console.log(votesToSkip, canSkip)
     const requestOptions = {
       method : 'POST',
       headers : {
-        "Content-Type" : "application/json" 
+        "Content-Type" : "application/json" ,
+        "X-Csrftoken" : csrf,
       },
-
       body : JSON.stringify({
         votesToSkip : votesToSkip,
         guestCanPause : canSkip,
       })
     };
     
-    fetch("/api/createRoom/" , requestOptions).then((response) =>
-      response.json()).then((data) => console.log(data));
+    const res = await fetch("/api/createRoom/" , requestOptions);
+    const data = await res.json();
+    console.table(data);
   }
 
   return (
@@ -48,8 +65,8 @@ const createRoomPage = ()=>{
   <RadioGroup aria-label=" Guest can pause?" name="pause" 
   // value={value} onChange={handleChange}
   >
-    <FormControlLabel value="yes" control={<Radio onClick={()=> handleCanSkip (true) }/>} label="Yes" />
-    <FormControlLabel value="no" control={<Radio onClick={()=>handleCanSkip (false)}/>} label="No" />
+    <FormControlLabel value="yes" control={<Radio onClick={()=> handleCanSkip (true) }/>} label="Play/Pause" />
+    <FormControlLabel value="no" control={<Radio onClick={()=>handleCanSkip (false)}/>} label="No Control" />
   </RadioGroup>
 </FormControl>
 
